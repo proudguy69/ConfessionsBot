@@ -11,7 +11,7 @@ class Setup:
         self.message_embed = data.get("message_embed", {})
     
     def update(self, data):
-        SETUP.update_one({{"guild_id":self.guild_id}}, data, upsert=True)
+        SETUP.update_one({"guild_id":self.guild_id}, data, upsert=True)
         data = SETUP.find_one({"guild_id":self.guild_id})
         self.__init__(data)
 

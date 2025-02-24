@@ -10,7 +10,7 @@ class ConfessionBot(Bot):
     def __init__(self):
         super().__init__(command_prefix='-', intents=Intents.all())
         self.logger = logging.getLogger('Bot')
-        self.custom_extensions:list[str] = ["cogs.setup"]
+        self.custom_extensions:list[str] = ["cogs.setup", "cogs.confess"]
 
     async def setup_hook(self):
         self.logger.info("Runnings setup hook")

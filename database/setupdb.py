@@ -9,7 +9,7 @@ class Setup:
         self.image_permissions = data.get("image_permissions", [])
         self.confession_permissions:dict = data.get("confession_permissions", {})
         self.message_content = data.get("message_content", '')
-        self.message_embed = data.get("message_embed", {"title":"New Confession!","description":"{user.name} submitted a new confession:\n\n{confession}","color":0xffa1dc})
+        self.message_embed:dict = data.get("message_embed", {"title":"New Confession!","description":"{user.name} submitted a new confession:\n\n{confession}","color":0xffa1dc})
         self.embed = self.setup_embed()
     
     def update(self, data):

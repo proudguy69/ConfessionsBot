@@ -31,17 +31,18 @@ class EmbedModal(Modal):
     def __init__(self, original_interaction:Interaction):
         self.original_interaction = original_interaction
         super().__init__(title="Edit Embed Body", timeout=500)
+        server_setup = get_setup(original_interaction.guild_id)
     
-    title = TextInput(label="title", style=TextStyle.short, placeholder="the title of the embed")
-    color = TextInput(label="color", style=TextStyle.short, placeholder="the color of the embed, in #ffa1dc format", max_length=7, min_length=6, default="#ffa1dc", required=False)
-    description = TextInput(label="description", style=TextStyle.paragraph, placeholder="the description of the embed, varibles allowed")
-    footer = TextInput(label="footer", style=TextStyle.short, placeholder="the footer of the embed", required=False)
+        self.embed_title = TextInput(label="title", style=TextStyle.short, placeholder="the title of the embed", default=server_setup.message_embed.get('title', ''))
+        self.color = TextInput(label="color", style=TextStyle.short, placeholder="the color of the embed, in #ffa1dc format", default=server_setup.message_embed.get('color', ''), max_length=7, min_length=6, required=False)
+        self.description = TextInput(label="description", style=TextStyle.paragraph, placeholder="the description of the embed, varibles allowed", default=server_setup.message_embed.get('description', ''))
+        self.footer = TextInput(label="footer", style=TextStyle.short, placeholder="the footer of the embed", required=False, default=server_setup.message_embed.get('description', ''))
 
     async def on_submit(self, interaction:Interaction):
         await interaction.response.defer()
         server_setup = get_setup(interaction.guild_id)
         server_setup.update({"$set":{
-            "message_embed.title":self.title,
+            "message_embed.title":self.embed_title,
             "message_embed.description":self.description,
             "message_embed.color":self.color,
             "message_embed.footer":self.footer if self.footer else '',

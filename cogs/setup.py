@@ -1,6 +1,6 @@
 from discord.ext.commands import Cog, Bot
 from discord.app_commands import Group, describe, default_permissions
-from discord import Interaction, TextChannel
+from discord import Interaction, TextChannel, Embed
 
 from database.setupdb import get_setup, Setup
 from cogs.ui.embedui import EditEmbedView
@@ -104,8 +104,10 @@ class SetupExtension(Cog):
     async def setup_message_embed(self, interaction:Interaction):
         await interaction.response.defer()
         server_setup = get_setup(interaction.guild_id)
+        confession_embed = server_setup.create_embed(user=interaction.user, confession="example confession")
+
         await interaction.followup.send(content="Below is the embed to edit, press any of the buttons to edit the embed",
-                                        embed=server_setup.create_embed(),
+                                        embed=confession_embed,
                                         view=EditEmbedView())
 
 

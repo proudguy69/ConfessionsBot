@@ -9,7 +9,7 @@ class Setup:
         self.image_permissions = data.get("image_permissions", [])
         self.confession_permissions:dict = data.get("confession_permissions", {})
         self.message_content = data.get("message_content", '')
-        self.message_embed = data.get("message_embed", {})
+        self.message_embed = data.get("message_embed", {"title":"New Confession!","description":"{user.name} submitted a new confession:\n\n{confession}","color":0xffa1dc})
         self.embed = self.setup_embed()
     
     def update(self, data):
@@ -19,6 +19,11 @@ class Setup:
     
     # for embed of the current settings
     def setup_embed(self) -> Embed:
+        """Creates an embed with all the attributes of this class
+
+        Returns:
+            Embed: a discord.Embed
+        """
         confession_channel = f"<#{self.confession_channel}>" if self.confession_channel else None
         logging_channel = f"<#{self.logging_channel}>" if self.logging_channel else None
         confession_permissions = "`[" + self.confession_permissions.get('mode','') + "ed]` " +  ", ".join(f"<@&{r_id}>" for r_id in self.confession_permissions.get("role_ids",[])) if self.confession_permissions else None
@@ -37,6 +42,16 @@ class Setup:
 
         setup_embed = Embed(title="Setup Configuration", description=description)
         return setup_embed
+
+    def create_embed(self) -> Embed:
+        """Creates an embed from the message_embed attribute
+
+        Returns:
+            Embed: a discord.Embed
+        """
+        embed_data = self.message_embed
+        confession_embed = Embed.from_dict(embed_data)
+        return confession_embed
 
 
 

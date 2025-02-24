@@ -3,6 +3,7 @@ from discord.app_commands import Group, describe, default_permissions
 from discord import Interaction, TextChannel
 
 from database.setupdb import get_setup, Setup
+from cogs.ui.embedui import CreateEmbedView
 
 from enum import Enum
 
@@ -101,11 +102,11 @@ class SetupExtension(Cog):
     @setup_message.command(name="embed", description="sets up the confession embed")
     @default_permissions(administrator=True)
     async def setup_message_embed(self, interaction:Interaction):
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer()
         setup = get_setup(interaction.guild_id)
         if not setup.message_embed:
             # creation view
-            await interaction.followup.send("It looks like there is not an embed, would you like to setup one?")
+            await interaction.followup.send("It looks like there is not an embed, would you like to setup one?", view=CreateEmbedView())
             return
         await interaction.followup.send(setup.message_embed)
 
